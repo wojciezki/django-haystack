@@ -422,7 +422,10 @@ class SolrSearchBackend(BaseSearchBackend):
         indexed_models = unified_index.get_indexed_models()
 
         for raw_result in raw_results.docs:
-            app_label, model_name = raw_result[DJANGO_CT].split('.')
+            if type(raw_result[DJANGO_CT]) == list:
+                app_label, model_name = raw_result[DJANGO_CT][0].split('.')
+            else:
+                app_label, model_name = raw_result[DJANGO_CT].split('.')
             additional_fields = {}
             model = haystack_get_model(app_label, model_name)
 
